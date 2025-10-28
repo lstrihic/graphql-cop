@@ -1,0 +1,108 @@
+type Query {
+    # Simple queries
+    disclosure(id: ID!): Disclosure
+    disclosures: [Disclosure!]!
+
+    # N+1 Problem Demo - WITHOUT @BatchMapping (shows the problem!)
+    disclosuresNPlusOne: [DisclosureNPlusOne!]!
+
+    # Author queries
+    author(id: ID!): Author
+    authors: [Author!]!
+}
+
+type Mutation {
+    # Create operations
+    createDisclosure(input: CreateDisclosureInput!): Disclosure!
+
+    # Update operations
+    updateDisclosure(id: ID!, input: UpdateDisclosureInput!): Disclosure!
+
+    # Add comment to disclosure
+    addComment(disclosureId: ID!, input: CommentInput!): Comment!
+}
+
+# Demonstrates relationships and @SchemaMapping
+type Disclosure {
+    id: ID!
+    title: String!
+    description: String
+    publishedDate: String!
+    severity: Severity!
+    status: DisclosureStatus!
+
+    # Relationship fields - resolved via @SchemaMapping
+    author: Author!
+    comments: [Comment!]!
+    commentsCount: Int!
+
+    # Computed field
+    isRecent: Boolean!
+}
+
+# Demonstrates nested relationships
+type Author {
+    id: ID!
+    name: String!
+    email: String!
+
+    # Relationship - demonstrates N+1 problem and DataLoader solution
+    disclosures: [Disclosure!]!
+    totalDisclosures: Int!
+}
+
+type Comment {
+    id: ID!
+    content: String!
+    createdAt: String!
+    author: Author!
+}
+
+# Input types for mutations
+input CreateDisclosureInput {
+    title: String!
+    description: String
+    severity: Severity!
+    authorId: ID!
+}
+
+input UpdateDisclosureInput {
+    title: String
+    description: String
+    severity: Severity
+    status: DisclosureStatus
+}
+
+input CommentInput {
+    content: String!
+    authorId: ID!
+}
+
+enum Severity {
+    LOW
+    MEDIUM
+    HIGH
+    CRITICAL
+}
+
+enum DisclosureStatus {
+    DRAFT
+    PUBLISHED
+    ARCHIVED
+}
+
+# N+1 Problem Demonstration Type
+# This type intentionally does NOT use @BatchMapping
+# Use this to demonstrate the performance difference!
+type DisclosureNPlusOne {
+    id: ID!
+    title: String!
+    description: String
+    publishedDate: String!
+    severity: Severity!
+    status: DisclosureStatus!
+
+    # These fields cause N+1 problem - resolved with @SchemaMapping (not @BatchMapping)
+    author: Author!
+    comments: [Comment!]!
+}
