@@ -2,6 +2,8 @@
 
 Spring Boot GraphQL workshop with slides and live demo.
 
+Presenataion link: https://lstrihic.github.io/graphql-cop
+
 ## Prerequisites
 
 - Java 17
