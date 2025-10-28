@@ -816,35 +816,6 @@ This is production-grade GraphQL implementation with Spring Boot
 </div>
 
 ---
-transition: fade-out
----
-
-# Project Structure
-
-Well-organized codebase
-
-```
-src/main/java/hr/truenorth/graphql/graphql/
-├── controller/
-│   ├── DisclosureController.java    # @BatchMapping examples
-│   ├── N1DemoController.java        # N+1 problem demo
-│   ├── AuthorController.java        # Nested batching
-│   └── CommentController.java       # Comment batching
-├── input/
-│   ├── CreateDisclosureInput.java   # Type-safe mutations
-│   ├── UpdateDisclosureInput.java
-│   └── CommentInput.java
-├── model/
-│   ├── Disclosure.java              # Domain models
-│   ├── Author.java
-│   └── Comment.java
-└── service/
-    ├── DisclosureService.java       # Business logic
-    ├── AuthorService.java           # Batched operations
-    └── CommentService.java
-```
-
----
 transition: slide-up
 ---
 
